@@ -27,9 +27,9 @@ export class Player {
 
     this.shuffle = deserializedToken.get("s") === "1";
     this.searchResult = parseInt(deserializedToken.get("sr") ?? "0");
-    this.autoplay = deserializedToken.get("a") === "1";
+    this.autoplay = (deserializedToken.get("a") ?? "1") === "1";
     this.currentIntent = deserializedToken.get("i") ?? "";
-    this.query = deserializedToken.get("query") ?? "";
+    this.query = (deserializedToken.get("q") ?? "").replace(/_/g, " ");
     this.loop = deserializedToken.get("l") === "1";
     this.queue = Array.from(deserializedToken.keys())
       .filter((key) => key.startsWith("v"))
@@ -149,7 +149,7 @@ export class Player {
     this.searchResult && tokenList.push(`sr=${this.searchResult}`);
     this.autoplay && tokenList.push("a=1");
     this.currentIntent && tokenList.push(`i=${this.currentIntent}`);
-    this.query && tokenList.push(`query=${this.query}`);
+    this.query && tokenList.push(`q=${this.query.replace(/ /g, "_")}`);
     this.loop && tokenList.push("l=1");
     this.queue.forEach((val, i) => {
       tokenList.push(`v${i}=${val}`);

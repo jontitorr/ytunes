@@ -247,7 +247,7 @@ const nextPlaylist = (event: AlexaEvent, supportsVideo: boolean) => {
   const { attributes } = event.session;
 
   attributes.sr = player.searchResult + 1;
-  attributes.query = player.query;
+  attributes.query = player.query.replace(/ /g, "_");
 
   return search(event, supportsVideo);
 };
@@ -258,13 +258,18 @@ const search = async (event: AlexaEvent, supportsVideo: boolean) => {
   }
 
   const { intent } = event.request;
-  let query = intent.slots.query?.value || "";
   const { name: intentName } = intent;
   const attributes = event.session.attributes || { sr: 0, intent };
 
-  if (attributes.query) {
-    query = (attributes.query as string).replace("_", " ");
-  }
+  const [query, firstTime] = (() => {
+    if (attributes.query) {
+      return [(attributes.query as string).replace(/_/g, " "), false];
+    }
+    if (intent.slots.query) {
+      return [intent.slots.query.value.toLowerCase(), true];
+    }
+    return ["", false];
+  })();
 
   // We will be using the "sr" attribute to keep track of the index of the search result we are currently on. This is useful for events where we need to skip to the next video in the search result.
 
@@ -273,11 +278,11 @@ const search = async (event: AlexaEvent, supportsVideo: boolean) => {
   }
 
   const sr = attributes.sr as number;
-  const player = new Player("");
-
-  player.searchResult = sr;
-  player.currentIntent = intentName.replace("Intent", "");
-  player.query = query.replace(" ", "_");
+  const player = new Player(
+    `q=${
+      firstTime ? query.replace(/ /g, "_") : query
+    }&sr=${sr}&i=${intentName.replace("Intent", "")}`
+  );
 
   if (
     intentName === "ShuffleIntent" ||

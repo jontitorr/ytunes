@@ -77,4 +77,11 @@ const illegalAction = (): Response => {
   return shortResponse(getStrings().illegal, false);
 };
 
-export { doNothing, doNothingAudio, illegalAction, shuffle, parseTime, shortResponse };
+export {
+  doNothing,
+  doNothingAudio,
+  illegalAction,
+  shuffle,
+  parseTime,
+  shortResponse,
+};
