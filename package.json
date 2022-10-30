@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "fuzzball": "^2.1.2",
+    "node-fetch": "^2.6.1",
+    "ytdl-core": "^4.11.2"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.6.1"
+  }
+}
