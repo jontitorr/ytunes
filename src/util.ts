@@ -52,12 +52,20 @@ const shortResponse = (output: string, shouldEndSession: boolean): Response => {
 };
 
 /**
- * Use for when you have to return a response to the Alexa, but you don't want to do anything.
+ * Use for when you have to return a response to the Alexa, but you don't want to do anything. This will contain an empty outputSpeech field which is not suitable for responding to AudioPlayer requests. For that use doNothingAudio.
  *
  * @return {Response} The empty response.
  */
 const doNothing = (): Response => {
   return shortResponse("", true);
+};
+
+/**
+ * Sends an empty response to AudioPlayer requests.
+ * @returns {Response} The empty response.
+ */
+const doNothingAudio = (): Response => {
+  return buildResponse({ shouldEndSession: true });
 };
 
 /**
@@ -69,4 +77,4 @@ const illegalAction = (): Response => {
   return shortResponse(getStrings().illegal, false);
 };
 
-export { doNothing, illegalAction, shuffle, parseTime, shortResponse };
+export { doNothing, doNothingAudio, illegalAction, shuffle, parseTime, shortResponse };

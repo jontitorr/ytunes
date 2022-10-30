@@ -459,11 +459,10 @@ const skip = async (
 
   const currentOffsetInMilliseconds =
     event.context.AudioPlayer?.offsetInMilliseconds || 0;
-  const skipMultiplier = skipDirection === SkipDirection.Forward ? 1 : -1;
 
   return resume(
     event,
-    currentOffsetInMilliseconds + offsetInMilliseconds * skipMultiplier,
+    currentOffsetInMilliseconds + offsetInMilliseconds * skipDirection,
     supportsVideo
   );
 };

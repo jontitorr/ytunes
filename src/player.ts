@@ -97,9 +97,6 @@ export class Player {
     let url = "";
 
     while (nextTrack != this.currentTrack) {
-      if (url) {
-        break;
-      }
       if (nextTrack < 0) {
         if (!this.loop) {
           return ["", ""];
@@ -117,13 +114,14 @@ export class Player {
 
       [url, title] = await getUrlAndTitle(this.queue[nextTrack], supportsVideo);
 
-      if (!url) {
-        if (badTrackStart === -1) {
-          badTrackStart = nextTrack;
-        }
-
-        badTrackEnd = nextTrack;
+      if (url) {
+        break;
       }
+      if (badTrackStart === -1) {
+        badTrackStart = nextTrack;
+      }
+
+      badTrackEnd = nextTrack;
       nextTrack += direction;
     }
 

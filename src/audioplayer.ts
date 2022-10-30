@@ -1,26 +1,29 @@
 import { logger } from "./logger";
 import { Player, SkipDirection } from "./player";
 import { buildAudioEnqueueResponse, buildResponse } from "./responses";
-import { getStrings } from "./strings";
-import { doNothing, shortResponse } from "./util";
+import { doNothingAudio } from "./util";
 
 import type { AlexaEvent } from "./types";
 
 export const started = async (event: AlexaEvent) => {
   if (!event.request.token) {
-    return shortResponse(getStrings().nothingplaying, true);
+    return doNothingAudio();
   }
 
   logger.info("Audio playback started");
+
+  return doNothingAudio();
 };
 
 export const finished = () => {
   logger.info("Audio playback Finished");
+  return doNothingAudio();
 };
 
 export const stopped = (event: AlexaEvent) => {
   const { offsetInMilliseconds } = event.request;
   logger.info(`Audio playback stopped at ${offsetInMilliseconds}`);
+  return doNothingAudio();
 };
 
 /**
@@ -33,13 +36,13 @@ const nearlyFinished = async (event: AlexaEvent, supportsVideo: boolean) => {
   const { token } = event.request;
 
   if (!token) {
-    return doNothing();
+    return doNothingAudio();
   }
 
   const player = new Player(token);
 
   if (!player.autoplay) {
-    return doNothing();
+    return doNothingAudio();
   }
 
   const [trackUrl] = await player.skipTrack(
@@ -48,7 +51,7 @@ const nearlyFinished = async (event: AlexaEvent, supportsVideo: boolean) => {
   );
 
   if (!trackUrl) {
-    return doNothing();
+    return doNothingAudio();
   }
 
   return buildResponse(
@@ -72,7 +75,7 @@ const failed = async (event: AlexaEvent, supportsVideo: boolean) => {
   const { token } = event.request;
 
   if (!token) {
-    return doNothing();
+    return doNothingAudio();
   }
 
   const player = new Player(token);
@@ -82,7 +85,7 @@ const failed = async (event: AlexaEvent, supportsVideo: boolean) => {
   );
 
   if (!trackUrl) {
-    return doNothing();
+    return doNothingAudio();
   }
 
   // Will attempt to play the next song.
