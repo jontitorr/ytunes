@@ -38,6 +38,7 @@ From there you will have an out directory with the compiled JavaScript files. Wi
 5. Once created, you will be taken to the function's page. Click on the "Code" tab.
 6. From there, click on the "Upload from" dropdown and select "Upload a .zip file".
 7. Upload the zip file you created in the previous step, or the one included in this repository.
+8. Once uploaded, click on the "Configuration" tab. Under "Environment variables", add a new variable called "API_KEY" and set it to your YouTube API key. You can get one [here](https://developers.google.com/youtube/v3/getting-started).
 
 #### 3. Alexa Skill Setup: from [jukebox](https://github.com/crd/jukebox)
 
